@@ -1,3 +1,10 @@
+urlpatterns += [
+    path('book/add/', add_book, name='add_book'),
+    path('book/edit/<int:pk>/', edit_book, name='edit_book'),
+    path('book/delete/<int:pk>/', delete_book, name='delete_book'),
+]
+
+
 from .views import admin_view
 from .views import librarian_view
 from .views import member_view
