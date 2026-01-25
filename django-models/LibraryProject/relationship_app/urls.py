@@ -1,3 +1,7 @@
+from .views import admin_view
+from .views import librarian_view
+from .views import member_view
+
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 from . import views
@@ -17,4 +21,11 @@ urlpatterns = [
         name='logout'
     ),
     path('register/', views.register, name='register'),
+]
+
+
+urlpatterns += [
+    path('admin-role/', admin_view, name='admin_view'),
+    path('librarian-role/', librarian_view, name='librarian_view'),
+    path('member-role/', member_view, name='member_view'),
 ]
