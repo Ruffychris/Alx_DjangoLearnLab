@@ -1,9 +1,3 @@
-urlpatterns += [
-    path('book/add/', add_book, name='add_book'),
-    path('book/edit/<int:pk>/', edit_book, name='edit_book'),
-    path('book/delete/<int:pk>/', delete_book, name='delete_book'),
-]
-
 
 from .views import admin_view
 from .views import librarian_view
@@ -36,3 +30,11 @@ urlpatterns += [
     path('librarian-role/', librarian_view, name='librarian_view'),
     path('member-role/', member_view, name='member_view'),
 ]
+
+
+urlpatterns += [
+    path('book/add/', add_book, name='add_book'),
+    path('book/edit/<int:pk>/', edit_book, name='edit_book'),
+    path('book/delete/<int:pk>/', delete_book, name='delete_book'),
+]
+
