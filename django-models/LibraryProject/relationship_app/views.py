@@ -1,3 +1,7 @@
+from django.shortcuts import render
+from django.views.generic.detail import DetailView
+from .models import Library, Book
+
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render, redirect
 from .models import Book
@@ -8,6 +12,12 @@ from .models import UserProfile
 
 from django.shortcuts import render
 from .models import Book
+
+class LibraryDetailView(DetailView):
+    model = Library
+    template_name = 'relationship_app/library_detail.html'
+    context_object_name = 'library'
+
 
 def list_books(request):
     return render(
