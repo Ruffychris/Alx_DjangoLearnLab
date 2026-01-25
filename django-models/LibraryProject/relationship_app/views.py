@@ -6,6 +6,16 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import user_passes_test
 from .models import UserProfile
 
+from django.shortcuts import render
+from .models import Book
+
+def list_books(request):
+    return render(
+        request,
+        'relationship_app/list_books.html',
+        {'books': Book.objects.all()}
+    )
+
 
 def is_admin(user):
     return user.is_authenticated and user.userprofile.role == 'Admin'
