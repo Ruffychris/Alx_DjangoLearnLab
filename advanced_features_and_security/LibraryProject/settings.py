@@ -11,6 +11,31 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 import os
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False
+
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[your_domain_here]']
+
+# Browser-side protections
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Cookie security
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+# HTTPS settings
+SECURE_SSL_REDIRECT = True
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+
+
+
+import os
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -43,6 +68,18 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bookshelf',
 ]
+
+INSTALLED_APPS += ['csp']
+
+MIDDLEWARE += [
+    'csp.middleware.CSPMiddleware',
+]
+
+# Example CSP policy
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'",)
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")  # if you need inline styles
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -186,3 +223,9 @@ Secure Headers Implementation
 # This is necessary to recognize HTTPS requests forwarded by a proxy.
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # The 'SECURE_PROXY_SSL_HEADER' setting specifies that the header 'X-Forwarded-Proto' will be used to detect whether the original request was over HTTPS. The value 'https' tells Django to consider the request secure if 'X-Forwarded-Proto' is set to 'https'.
+
+# SECURITY SETTINGS:
+# DEBUG=False for production
+# CSRF_COOKIE_SECURE and SESSION_COOKIE_SECURE enforce HTTPS-only cookies
+# SECURE_BROWSER_XSS_FILTER, X_FRAME_OPTIONS, SECURE_CONTENT_TYPE_NOSNIFF provide browser-level protections
+# HSTS settings force HTTPS for all subdomains
