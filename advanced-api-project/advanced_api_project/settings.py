@@ -43,6 +43,8 @@ INSTALLED_APPS = [
 
     # Local app containing API logic
     'api',
+
+    'django_filters',
 ]
 
 
@@ -120,5 +122,17 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
+
+
+REST_FRAMEWORK = {
+    # Default backends for filtering, searching, and ordering
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',  # Filtering
+        'rest_framework.filters.SearchFilter',               # Search
+        'rest_framework.filters.OrderingFilter',             # Ordering
+    ]
+}
+
+
 
 STATIC_URL = 'static/'
