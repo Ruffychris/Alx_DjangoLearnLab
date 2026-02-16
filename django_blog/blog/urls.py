@@ -67,4 +67,4 @@ path(
 
 # Search and Tags
 path('search/', search_results, name='search-results'),
-path('tags/<slug:tag_slug>/', posts_by_tag, name='tag-posts'),
+path('tags/<slug:tag_slug>/', PostByTagListView.as_view(), name='tag-posts'),
