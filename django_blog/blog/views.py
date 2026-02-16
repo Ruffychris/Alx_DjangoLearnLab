@@ -1,3 +1,6 @@
+from .models import Comment
+from .forms import CommentForm
+
 from django.views.generic import (
     ListView,
     DetailView,
@@ -122,6 +125,16 @@ class PostDetailView(DetailView):
     template_name = 'blog/post_detail.html'
 
 
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+
+        context['comments'] = self.object.comments.all()
+
+        return context
+
+
+
 class PostCreateView(LoginRequiredMixin, CreateView):
 
     model = Post
@@ -166,3 +179,69 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         post = self.get_object()
 
         return self.request.user == post.author
+
+
+# -----------------------------
+# COMMENT VIEWS
+# -----------------------------
+
+
+class CommentCreateView(LoginRequiredMixin, CreateView):
+
+    model = Comment
+    form_class = CommentForm
+    template_name = 'blog/comment_form.html'
+
+
+    def form_valid(self, form):
+
+        post = Post.objects.get(pk=self.kwargs['pk'])
+
+        form.instance.post = post
+        form.instance.author = self.request.user
+
+        return super().form_valid(form)
+
+
+    def get_success_url(self):
+
+        return self.object.post.get_absolute_url()
+
+
+
+class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+
+    model = Comment
+    form_class = CommentForm
+    template_name = 'blog/comment_form.html'
+
+
+    def test_func(self):
+
+        comment = self.get_object()
+
+        return self.request.user == comment.author
+
+
+    def get_success_url(self):
+
+        return self.object.post.get_absolute_url()
+
+
+
+class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+
+    model = Comment
+    template_name = 'blog/comment_confirm_delete.html'
+
+
+    def test_func(self):
+
+        comment = self.get_object()
+
+        return self.request.user == comment.author
+
+
+    def get_success_url(self):
+
+        return self.object.post.get_absolute_url()
