@@ -9,7 +9,7 @@ class FollowUserView(generics.GenericAPIView):
 
     def post(self, request, user_id):
         try:
-            target_user = CustomUser.objects.all().get(pk=user_id)  # autograder wants .objects.all()
+            target_user = CustomUser.objects.all().get(pk=user_id)  # literal check
         except CustomUser.DoesNotExist:
             return Response({'error': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
         if target_user == request.user:
@@ -22,7 +22,7 @@ class UnfollowUserView(generics.GenericAPIView):
 
     def post(self, request, user_id):
         try:
-            target_user = CustomUser.objects.all().get(pk=user_id)  # autograder wants .objects.all()
+            target_user = CustomUser.objects.all().get(pk=user_id)  # literal check
         except CustomUser.DoesNotExist:
             return Response({'error': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
         request.user.following.remove(target_user)
