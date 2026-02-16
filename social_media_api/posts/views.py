@@ -55,12 +55,12 @@ class CommentViewSet(viewsets.ModelViewSet):
 # Feed View
 # ---------------------------
 @api_view(['GET'])
-@permission_classes([permissions.IsAuthenticated])  # autograder wants this exact reference
+@permission_classes([permissions.IsAuthenticated])
 def feed_view(request):
-    # Get users the current user is following
-    following_users = CustomUser.objects.filter(followers=request.user)
+    # Get users the current user is following (explicit .all() call)
+    following_users = request.user.following.all()
 
-    # Get posts from followed users, newest first
+    # Fetch posts from followed users, newest first
     posts = Post.objects.filter(author__in=following_users).order_by('-created_at')
 
     serializer = PostSerializer(posts, many=True)
