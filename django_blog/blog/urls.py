@@ -62,3 +62,9 @@ path(
     CommentDeleteView.as_view(),
     name='comment-delete'
 ),
+
+
+
+# Search and Tags
+path('search/', search_results, name='search-results'),
+path('tags/<slug:tag_slug>/', posts_by_tag, name='tag-posts'),

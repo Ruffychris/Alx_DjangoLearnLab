@@ -62,3 +62,12 @@
 <a href="{% url 'post-list' %}">Back</a>
 
 {% endblock %}
+
+
+<hr>
+<h4>Tags:</h4>
+{% for tag in object.tags.all %}
+    <a href="{% url 'tag-posts' tag.slug %}">{{ tag.name }}</a>
+{% empty %}
+    <p>No tags</p>
+{% endfor %}

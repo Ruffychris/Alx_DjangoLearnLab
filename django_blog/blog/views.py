@@ -1,3 +1,6 @@
+from django.db.models import Q
+from taggit.models import Tag
+
 from .models import Comment
 from .forms import CommentForm
 
@@ -77,6 +80,29 @@ def register(request):
         "blog/register.html",
         {"form": form}
     )
+
+
+#SEARCH RESULTS
+def search_results(request):
+    query = request.GET.get('q')
+    results = Post.objects.none()
+    if query:
+        results = Post.objects.filter(
+            Q(title__icontains=query) |
+            Q(content__icontains=query) |
+            Q(tags__name__icontains=query)
+        ).distinct()
+
+    context = {'results': results, 'query': query}
+    return render(request, 'blog/search_results.html', context)
+
+
+# TAG FILTER
+def posts_by_tag(request, tag_slug):
+    tag = get_object_or_404(Tag, slug=tag_slug)
+    posts = Post.objects.filter(tags__in=[tag])
+    context = {'posts': posts, 'tag': tag}
+    return render(request, 'blog/tag_posts.html', context)
 
 
 # PROFILE

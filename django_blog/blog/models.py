@@ -1,3 +1,5 @@
+from taggit.managers import TaggableManager
+
 from django.urls import reverse
 
 from django.db import models
@@ -5,6 +7,7 @@ from django.contrib.auth.models import User
 from .models import Post
 
 class Post(models.Model):
+    tags = TaggableManager(blank=True)
     title = models.CharField(max_length=200)
     content = models.TextField()
     published_date = models.DateTimeField(auto_now_add=True)

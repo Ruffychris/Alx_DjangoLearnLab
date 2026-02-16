@@ -33,3 +33,10 @@
 {% endfor %}
 
 {% endblock %}
+
+
+{% for tag in post.tags.all %}
+    <a href="{% url 'tag-posts' tag.slug %}">{{ tag.name }}</a>
+{% empty %}
+    No tags
+{% endfor %}
