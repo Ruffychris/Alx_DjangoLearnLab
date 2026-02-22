@@ -26,6 +26,7 @@ def like_post(request, pk):
 
     return Response({'message': 'Post liked successfully.'}, status=status.HTTP_201_CREATED)
 
+
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 def unlike_post(request, pk):
